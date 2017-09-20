@@ -393,7 +393,7 @@ function wp_set_lang_dir() {
 function require_wp_db() {
 	global $wpdb;
 
-	require_once( ABSPATH . WPINC . '/wp-db.php' );
+	require_once( ABSPATH . WPINC . '/db.php' );
 	if ( file_exists( WP_CONTENT_DIR . '/db.php' ) )
 		require_once( WP_CONTENT_DIR . '/db.php' );
 
@@ -542,7 +542,7 @@ function wp_not_installed() {
 		require( ABSPATH . WPINC . '/pluggable.php' );
 		require( ABSPATH . WPINC . '/formatting.php' );
 
-		$link = wp_guess_url() . '/wp-admin/install.php';
+		$link = wp_guess_url() . '/manager/install.php';
 
 		wp_redirect( $link );
 		die();
@@ -897,8 +897,8 @@ function wp_load_translations_early() {
 		if ( defined( 'WP_CONTENT_DIR' ) && @is_dir( WP_CONTENT_DIR . '/languages' ) )
 			$locations[] = WP_CONTENT_DIR . '/languages';
 
-		if ( @is_dir( ABSPATH . 'wp-content/languages' ) )
-			$locations[] = ABSPATH . 'wp-content/languages';
+		if ( @is_dir( ABSPATH . 'content/languages' ) )
+			$locations[] = ABSPATH . 'content/languages';
 
 		if ( @is_dir( ABSPATH . WPINC . '/languages' ) )
 			$locations[] = ABSPATH . WPINC . '/languages';

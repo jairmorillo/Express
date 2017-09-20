@@ -26,7 +26,7 @@ if ( isset($HTTP_RAW_POST_DATA) )
 	$HTTP_RAW_POST_DATA = trim($HTTP_RAW_POST_DATA);
 
 /** Include the bootstrap for setting up WordPress environment */
-include( dirname( __FILE__ ) . '/wp-load.php' );
+include( dirname( __FILE__ ) . '/load.php' );
 
 if ( isset( $_GET['rsd'] ) ) { // http://cyber.law.harvard.edu/blogs/gems/tech/rsd.html
 header('Content-Type: text/xml; charset=' . get_option('blog_charset'), true);
@@ -59,7 +59,7 @@ header('Content-Type: text/xml; charset=' . get_option('blog_charset'), true);
 exit;
 }
 
-include_once(ABSPATH . 'wp-admin/includes/admin.php');
+include_once(ABSPATH . 'manager/includes/admin.php');
 include_once(ABSPATH . WPINC . '/class-IXR.php');
 include_once(ABSPATH . WPINC . '/class-wp-xmlrpc-server.php'); 
 

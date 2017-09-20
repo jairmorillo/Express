@@ -13,10 +13,10 @@ if ( file_exists(WP_CONTENT_DIR . '/install.php') )
 	require (WP_CONTENT_DIR . '/install.php');
 
 /** WordPress Administration API */
-require_once(ABSPATH . 'wp-admin/includes/admin.php');
+require_once(ABSPATH . 'manager/includes/admin.php');
 
 /** WordPress Schema API */
-require_once(ABSPATH . 'wp-admin/includes/schema.php');
+require_once(ABSPATH . 'manager/includes/schema.php');
 
 if ( !function_exists('wp_install') ) :
 /**
@@ -604,10 +604,10 @@ function upgrade_100() {
 	}
 
 	$sql = "UPDATE $wpdb->options
-		SET option_value = REPLACE(option_value, 'wp-links/links-images/', 'wp-images/links/')
+		SET option_value = REPLACE(option_value, 'links/links-images/', 'images/links/')
 		WHERE option_name LIKE %s
 		AND option_value LIKE %s";
-	$wpdb->query( $wpdb->prepare( $sql, $wpdb->esc_like( 'links_rating_image' ) . '%', $wpdb->esc_like( 'wp-links/links-images/' ) . '%' ) );
+	$wpdb->query( $wpdb->prepare( $sql, $wpdb->esc_like( 'links_rating_image' ) . '%', $wpdb->esc_like( 'links/links-images/' ) . '%' ) );
 
 	$done_ids = $wpdb->get_results("SELECT DISTINCT post_id FROM $wpdb->post2cat");
 	if ($done_ids) :

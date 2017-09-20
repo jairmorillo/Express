@@ -9,7 +9,7 @@
  */
 
 /** Make sure that the WordPress bootstrap has run before continuing. */
-require( dirname(__FILE__) . '/wp-load.php' );
+require( dirname(__FILE__) . '/load.php' );
 
 // Redirect to https login if forced to use SSL
 if ( force_ssl_admin() && ! is_ssl() ) {
@@ -329,7 +329,7 @@ function retrieve_password() {
 	$message .= sprintf(__('Username: %s'), $user_login) . "\r\n\r\n";
 	$message .= __('If this was a mistake, just ignore this email and nothing will happen.') . "\r\n\r\n";
 	$message .= __('To reset your password, visit the following address:') . "\r\n\r\n";
-	$message .= '<' . network_site_url("wp-login.php?action=rp&key=$key&login=" . rawurlencode($user_login), 'login') . ">\r\n";
+	$message .= '<' . network_site_url("login.php?action=rp&key=$key&login=" . rawurlencode($user_login), 'login') . ">\r\n";
 
 	if ( is_multisite() ) {
 		$blogname = get_network()->site_name;
@@ -473,7 +473,7 @@ case 'logout' :
 	if ( ! empty( $_REQUEST['redirect_to'] ) ) {
 		$redirect_to = $requested_redirect_to = $_REQUEST['redirect_to'];
 	} else {
-		$redirect_to = 'wp-login.php?loggedout=true';
+		$redirect_to = 'login.php?loggedout=true';
 		$requested_redirect_to = '';
 	}
 
@@ -496,7 +496,7 @@ case 'retrievepassword' :
 	if ( $http_post ) {
 		$errors = retrieve_password();
 		if ( !is_wp_error($errors) ) {
-			$redirect_to = !empty( $_REQUEST['redirect_to'] ) ? $_REQUEST['redirect_to'] : 'wp-login.php?checkemail=confirm';
+			$redirect_to = !empty( $_REQUEST['redirect_to'] ) ? $_REQUEST['redirect_to'] : 'login.php?checkemail=confirm';
 			wp_safe_redirect( $redirect_to );
 			exit();
 		}
@@ -533,7 +533,7 @@ case 'retrievepassword' :
 
 ?>
 
-<form name="lostpasswordform" id="lostpasswordform" action="<?php echo esc_url( network_site_url( 'wp-login.php?action=lostpassword', 'login_post' ) ); ?>" method="post">
+<form name="lostpasswordform" id="lostpasswordform" action="<?php echo esc_url( network_site_url( 'login.php?action=lostpassword', 'login_post' ) ); ?>" method="post">
 	<p>
 		<label for="user_login" ><?php _e( 'Username or Email Address' ); ?><br />
 		<input type="text" name="user_login" id="user_login" class="input" value="<?php echo esc_attr($user_login); ?>" size="20" /></label>
@@ -589,9 +589,9 @@ case 'rp' :
 	if ( ! $user || is_wp_error( $user ) ) {
 		setcookie( $rp_cookie, ' ', time() - YEAR_IN_SECONDS, $rp_path, COOKIE_DOMAIN, is_ssl(), true );
 		if ( $user && $user->get_error_code() === 'expired_key' )
-			wp_redirect( site_url( 'wp-login.php?action=lostpassword&error=expiredkey' ) );
+			wp_redirect( site_url( 'login.php?action=lostpassword&error=expiredkey' ) );
 		else
-			wp_redirect( site_url( 'wp-login.php?action=lostpassword&error=invalidkey' ) );
+			wp_redirect( site_url( 'login.php?action=lostpassword&error=invalidkey' ) );
 		exit;
 	}
 
@@ -624,7 +624,7 @@ case 'rp' :
 	login_header(__('Reset Password'), '<p class="message reset-pass">' . __('Enter your new password below.') . '</p>', $errors );
 
 ?>
-<form name="resetpassform" id="resetpassform" action="<?php echo esc_url( network_site_url( 'wp-login.php?action=resetpass', 'login_post' ) ); ?>" method="post" autocomplete="off">
+<form name="resetpassform" id="resetpassform" action="<?php echo esc_url( network_site_url( 'login.php?action=resetpass', 'login_post' ) ); ?>" method="post" autocomplete="off">
 	<input type="hidden" id="user_login" value="<?php echo esc_attr( $rp_login ); ?>" autocomplete="off" />
 
 	<div class="user-pass1-wrap">
@@ -687,12 +687,12 @@ case 'register' :
 		 *
 		 * @param string $sign_up_url The sign up URL.
 		 */
-		wp_redirect( apply_filters( 'wp_signup_location', network_site_url( 'wp-signup.php' ) ) );
+		wp_redirect( apply_filters( 'wp_signup_location', network_site_url( 'signup.php' ) ) );
 		exit;
 	}
 
 	if ( !get_option('users_can_register') ) {
-		wp_redirect( site_url('wp-login.php?registration=disabled') );
+		wp_redirect( site_url('login.php?registration=disabled') );
 		exit();
 	}
 
@@ -703,7 +703,7 @@ case 'register' :
 		$user_email = isset( $_POST['user_email'] ) ? wp_unslash( $_POST['user_email'] ) : '';
 		$errors = register_new_user($user_login, $user_email);
 		if ( !is_wp_error($errors) ) {
-			$redirect_to = !empty( $_POST['redirect_to'] ) ? $_POST['redirect_to'] : 'wp-login.php?checkemail=registered';
+			$redirect_to = !empty( $_POST['redirect_to'] ) ? $_POST['redirect_to'] : 'login.php?checkemail=registered';
 			wp_safe_redirect( $redirect_to );
 			exit();
 		}
@@ -720,7 +720,7 @@ case 'register' :
 	$redirect_to = apply_filters( 'registration_redirect', $registration_redirect );
 	login_header(__('Registration Form'), '<p class="message register">' . __('Register For This Site') . '</p>', $errors);
 ?>
-<form name="registerform" id="registerform" action="<?php echo esc_url( site_url( 'wp-login.php?action=register', 'login_post' ) ); ?>" method="post" novalidate="novalidate">
+<form name="registerform" id="registerform" action="<?php echo esc_url( site_url( 'login.php?action=register', 'login_post' ) ); ?>" method="post" novalidate="novalidate">
 	<p>
 		<label for="user_login"><?php _e('Username') ?><br />
 		<input type="text" name="user_login" id="user_login" class="input" value="<?php echo esc_attr(wp_unslash($user_login)); ?>" size="20" /></label>
@@ -779,7 +779,7 @@ default:
 	if ( isset( $_REQUEST['redirect_to'] ) ) {
 		$redirect_to = $_REQUEST['redirect_to'];
 		// Redirect to https if user wants ssl
-		if ( $secure_cookie && false !== strpos($redirect_to, 'wp-admin') )
+		if ( $secure_cookie && false !== strpos($redirect_to, 'manager') )
 			$redirect_to = preg_replace('|^http://|', 'https://', $redirect_to);
 	} else {
 		$redirect_to = admin_url();
@@ -830,7 +830,7 @@ default:
 <?php		exit;
 		}
 
-		if ( ( empty( $redirect_to ) || $redirect_to == 'wp-admin/' || $redirect_to == admin_url() ) ) {
+		if ( ( empty( $redirect_to ) || $redirect_to == 'manager/' || $redirect_to == admin_url() ) ) {
 			// If the user doesn't belong to a blog, send them to user admin. If the user can't edit posts, send them to their profile.
 			if ( is_multisite() && !get_active_blog_for_user($user->ID) && !is_super_admin( $user->ID ) )
 				$redirect_to = user_admin_url();
@@ -897,7 +897,7 @@ default:
 	}
 ?>
 
-<form name="loginform" id="loginform" action="<?php echo esc_url( site_url( 'wp-login.php', 'login_post' ) ); ?>" method="post">
+<form name="loginform" id="loginform" action="<?php echo esc_url( site_url( 'login.php', 'login_post' ) ); ?>" method="post">
 	<p>
 		<label for="user_login"><?php _e( 'Username or Email Address' ); ?><br />
 		<input type="text" name="log" id="user_login"<?php echo $aria_describedby_error; ?> class="input" value="<?php echo esc_attr( $user_login ); ?>" size="20" /></label>

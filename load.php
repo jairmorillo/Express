@@ -31,21 +31,21 @@ error_reporting( E_CORE_ERROR | E_CORE_WARNING | E_COMPILE_ERROR | E_ERROR | E_W
  *
  * If neither set of conditions is true, initiate loading the setup process.
  */
-if ( file_exists( ABSPATH . 'wp-config.php') ) {
+if ( file_exists( ABSPATH . 'config.php') ) {
 
 	/** The config file resides in ABSPATH */
-	require_once( ABSPATH . 'wp-config.php' );
+	require_once( ABSPATH . 'config.php' );
 
-} elseif ( @file_exists( dirname( ABSPATH ) . '/wp-config.php' ) && ! @file_exists( dirname( ABSPATH ) . '/wp-settings.php' ) ) {
+} elseif ( @file_exists( dirname( ABSPATH ) . '/config.php' ) && ! @file_exists( dirname( ABSPATH ) . '/settings.php' ) ) {
 
 	/** The config file resides one level above ABSPATH but is not part of another install */
-	require_once( dirname( ABSPATH ) . '/wp-config.php' );
+	require_once( dirname( ABSPATH ) . '/config.php' );
 
 } else {
 
 	// A config file doesn't exist
 
-	define( 'WPINC', 'wp-includes' );
+	define( 'WPINC', 'includes' );
 	require_once( ABSPATH . WPINC . '/load.php' );
 
 	// Standardize $_SERVER variables across setups.
@@ -53,7 +53,7 @@ if ( file_exists( ABSPATH . 'wp-config.php') ) {
 
 	require_once( ABSPATH . WPINC . '/functions.php' );
 
-	$path = wp_guess_url() . '/wp-admin/setup-config.php';
+	$path = wp_guess_url() . '/manager/setup-config.php';
 
 	/*
 	 * We're going to redirect to setup-config.php. While this shouldn't result
@@ -85,7 +85,7 @@ if ( file_exists( ABSPATH . 'wp-config.php') ) {
 	$die .= '<p>' . sprintf(
 		/* translators: %s: wp-config.php */
 		__( "You can create a %s file through a web interface, but this doesn't work for all server setups. The safest way is to manually create the file." ),
-		'<code>wp-config.php</code>'
+		'<code>config.php</code>'
 	) . '</p>';
 	$die .= '<p><a href="' . $path . '" class="button button-large">' . __( "Create a Configuration File" ) . '</a>';
 

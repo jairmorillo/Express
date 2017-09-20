@@ -30,38 +30,38 @@ if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', dirname( dirname( __FILE__ ) ) . '/' );
 }
 
-require( ABSPATH . 'wp-settings.php' );
+require( ABSPATH . 'settings.php' );
 
 /** Load WordPress Administration Upgrade API */
-require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+require_once( ABSPATH . 'manager/includes/upgrade.php' );
 
 /** Load WordPress Translation Install API */
-require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
+require_once( ABSPATH . 'manager/includes/translation-install.php' );
 
 nocache_headers();
 
 // Support wp-config-sample.php one level up, for the develop repo.
-if ( file_exists( ABSPATH . 'wp-config-sample.php' ) )
-	$config_file = file( ABSPATH . 'wp-config-sample.php' );
-elseif ( file_exists( dirname( ABSPATH ) . '/wp-config-sample.php' ) )
-	$config_file = file( dirname( ABSPATH ) . '/wp-config-sample.php' );
+if ( file_exists( ABSPATH . 'config-sample.php' ) )
+	$config_file = file( ABSPATH . 'config-sample.php' );
+elseif ( file_exists( dirname( ABSPATH ) . '/config-sample.php' ) )
+	$config_file = file( dirname( ABSPATH ) . '/config-sample.php' );
 else
-	wp_die( __( 'Sorry, I need a wp-config-sample.php file to work from. Please re-upload this file to your WordPress installation.' ) );
+	wp_die( __( 'Sorry, I need a config-sample.php file to work from. Please re-upload this file to your WordPress installation.' ) );
 
 // Check if wp-config.php has been created
-if ( file_exists( ABSPATH . 'wp-config.php' ) )
+if ( file_exists( ABSPATH . 'config.php' ) )
 	wp_die( '<p>' . sprintf(
 			/* translators: %s: install.php */
-			__( "The file 'wp-config.php' already exists. If you need to reset any of the configuration items in this file, please delete it first. You may try <a href='%s'>installing now</a>." ),
+			__( "The file 'config.php' already exists. If you need to reset any of the configuration items in this file, please delete it first. You may try <a href='%s'>installing now</a>." ),
 			'install.php'
 		) . '</p>'
 	);
 
 // Check if wp-config.php exists above the root directory but is not part of another install
-if ( @file_exists( ABSPATH . '../wp-config.php' ) && ! @file_exists( ABSPATH . '../wp-settings.php' ) ) {
+if ( @file_exists( ABSPATH . '../config.php' ) && ! @file_exists( ABSPATH . '../settings.php' ) ) {
 	wp_die( '<p>' . sprintf(
 			/* translators: %s: install.php */
-			__( "The file 'wp-config.php' already exists one level above your WordPress installation. If you need to reset any of the configuration items in this file, please delete it first. You may try <a href='%s'>installing now</a>." ),
+			__( "The file 'config.php' already exists one level above your WordPress installation. If you need to reset any of the configuration items in this file, please delete it first. You may try <a href='%s'>installing now</a>." ),
 			'install.php'
 		) . '</p>'
 	);
@@ -385,10 +385,10 @@ if ( ! /iPad|iPod|iPhone/.test( navigator.userAgent ) ) {
 		 * If this file doesn't exist, then we are using the wp-config-sample.php
 		 * file one level up, which is for the develop repo.
 		 */
-		if ( file_exists( ABSPATH . 'wp-config-sample.php' ) )
-			$path_to_wp_config = ABSPATH . 'wp-config.php';
+		if ( file_exists( ABSPATH . 'config-sample.php' ) )
+			$path_to_wp_config = ABSPATH . 'config.php';
 		else
-			$path_to_wp_config = dirname( ABSPATH ) . '/wp-config.php';
+			$path_to_wp_config = dirname( ABSPATH ) . '/config.php';
 
 		$handle = fopen( $path_to_wp_config, 'w' );
 		foreach ( $config_file as $line ) {

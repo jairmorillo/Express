@@ -1,11 +1,11 @@
 <?php
 
 /** Sets up the WordPress Environment. */
-require( dirname(__FILE__) . '/wp-load.php' );
+require( dirname(__FILE__) . '/load.php' );
 
 add_action( 'wp_head', 'wp_no_robots' );
 
-require( dirname( __FILE__ ) . '/wp-blog-header.php' );
+require( dirname( __FILE__ ) . '/blog-header.php' );
 
 if ( is_array( get_site_option( 'illegal_names' )) && isset( $_GET[ 'new' ] ) && in_array( $_GET[ 'new' ], get_site_option( 'illegal_names' ) ) ) {
 	wp_redirect( network_home_url() );
@@ -33,7 +33,7 @@ if ( !is_multisite() ) {
 }
 
 if ( !is_main_site() ) {
-	wp_redirect( network_site_url( 'wp-signup.php' ) );
+	wp_redirect( network_site_url( 'signup.php' ) );
 	die();
 }
 
@@ -74,7 +74,7 @@ function wpmu_signup_stylesheet() {
 }
 
 add_action( 'wp_head', 'wpmu_signup_stylesheet' );
-get_header( 'wp-signup' );
+get_header( 'signup' );
 
 /**
  * Fires before the site sign-up form.
@@ -455,7 +455,7 @@ function confirm_another_blog_signup( $domain, $path, $blog_title, $user_name, $
 		restore_current_blog();
 	} else {
 		$home_url  = 'http://' . $domain . $path;
-		$login_url = 'http://' . $domain . $path . 'wp-login.php';
+		$login_url = 'http://' . $domain . $path . 'login.php';
 	}
 
 	$site = sprintf( '<a href="%1$s">%2$s</a>',
@@ -534,7 +534,7 @@ function signup_user( $user_name = '', $user_email = '', $errors = '' ) {
 		/* translators: %s: name of the network */
 		printf( __( 'Get your own %s account in seconds' ), get_network()->site_name );
 	?></h2>
-	<form id="setupform" method="post" action="wp-signup.php" novalidate="novalidate">
+	<form id="setupform" method="post" action="signup.php" novalidate="novalidate">
 		<input type="hidden" name="stage" value="validate-user-signup" />
 		<?php
 		/** This action is documented in wp-signup.php */
@@ -849,7 +849,7 @@ $current_user = wp_get_current_user();
 if ( $active_signup == 'none' ) {
 	_e( 'Registration has been disabled.' );
 } elseif ( $active_signup == 'blog' && !is_user_logged_in() ) {
-	$login_url = wp_login_url( network_site_url( 'wp-signup.php' ) );
+	$login_url = wp_login_url( network_site_url( 'signup.php' ) );
 	/* translators: %s: login URL */
 	printf( __( 'You must first <a href="%s">log in</a>, and then you can create a new site.' ), $login_url );
 } else {
@@ -916,4 +916,4 @@ if ( $active_signup == 'none' ) {
  */
 do_action( 'after_signup_form' ); ?>
 
-<?php get_footer( 'wp-signup' );
+<?php get_footer( 'signup' );
