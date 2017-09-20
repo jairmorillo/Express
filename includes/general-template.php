@@ -304,7 +304,7 @@ function wp_logout_url($redirect = '') {
 		$args['redirect_to'] = urlencode( $redirect );
 	}
 
-	$logout_url = add_query_arg($args, site_url('wp-login.php', 'login'));
+	$logout_url = add_query_arg($args, site_url('login.php', 'login'));
 	$logout_url = wp_nonce_url( $logout_url, 'log-out' );
 
 	/**
@@ -329,7 +329,7 @@ function wp_logout_url($redirect = '') {
  * @return string The login URL. Not HTML-encoded.
  */
 function wp_login_url($redirect = '', $force_reauth = false) {
-	$login_url = site_url('wp-login.php', 'login');
+	$login_url = site_url('login.php', 'login');
 
 	if ( !empty($redirect) )
 		$login_url = add_query_arg('redirect_to', urlencode($redirect), $login_url);
@@ -365,7 +365,7 @@ function wp_registration_url() {
 	 *
 	 * @param string $register The user registration URL.
 	 */
-	return apply_filters( 'register_url', site_url( 'wp-login.php?action=register', 'login' ) );
+	return apply_filters( 'register_url', site_url( 'login.php?action=register', 'login' ) );
 }
 
 /**
@@ -507,7 +507,7 @@ function wp_lostpassword_url( $redirect = '' ) {
 		$args['redirect_to'] = $redirect;
 	}
 
-	$lostpassword_url = add_query_arg( $args, network_site_url('wp-login.php', 'login') );
+	$lostpassword_url = add_query_arg( $args, network_site_url('login.php', 'login') );
 
 	/**
 	 * Filters the Lost Password URL.
@@ -3725,6 +3725,7 @@ function get_the_generator( $type = '' ) {
 	 */
 	return apply_filters( "get_the_generator_{$type}", $gen, $type );
 }
+
 
 /**
  * Outputs the html checked attribute.
